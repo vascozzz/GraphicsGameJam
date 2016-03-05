@@ -35,15 +35,15 @@ public class RewindPower : Power
 
     public override void Step()
     {
-        if (!rewinding && Input.GetKeyDown(KeyCode.R))
+        if (!rewinding && Input.GetMouseButton(0))
+        {
+            Record();
+        }
+
+        if (Input.GetMouseButtonUp(0))
         {
             rewinding = true;
             StartCoroutine(Rewind());
-        }
-
-        if (!rewinding)
-        {
-            Record();
         }
     }
 
