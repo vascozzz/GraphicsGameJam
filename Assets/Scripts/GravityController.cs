@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GravityController : MonoBehaviour {
-
+public class GravityController : MonoBehaviour 
+{
     [SerializeField] private float gravity = -70f;
     [SerializeField] private Transform defaultAttractor;
 

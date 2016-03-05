@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour {
-
+public class PlayerController : MonoBehaviour 
+{
     //Params
     [SerializeField] private LayerMask jumpRayMask;
     [SerializeField] private float moveSpeed = 10000f;
@@ -19,13 +19,14 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody2D rb;
     private CircleCollider2D circleCollider;
 
-	
-	void Start () {
+	void Start () 
+	{
         rb = GetComponent<Rigidbody2D>();
         circleCollider = GetComponent<CircleCollider2D>();
 	}
 	
-	void Update () {
+	void Update () 
+	{
 	}
 
     void FixedUpdate()
@@ -50,7 +51,6 @@ public class PlayerController : MonoBehaviour {
         {
             rb.AddForce(transform.up * jumpForce);
         }
-         
     }
 
     private bool isGrounded()
