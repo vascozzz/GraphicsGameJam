@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GravityController : MonoBehaviour 
 {
@@ -10,7 +11,8 @@ public class GravityController : MonoBehaviour
     private Vector3 gravityUp;
     private Vector3 bodyUp;
 
-    private bool inWarpZone = false;
+    //Gravity Zones
+    private List<GravityZoneController> gravityZones;
 
     // Components
     private Rigidbody2D rb;
@@ -27,34 +29,49 @@ public class GravityController : MonoBehaviour
         {
             defaultAttractor = GameObject.FindGameObjectWithTag("Planet").transform;
         }
+
+        gravityZones = new List<GravityZoneController>();
     }
 
     // Update is called once per frame
     void Update ()
     {
-        //Update vector values
-        gravityUp = (transform.position - defaultAttractor.position).normalized;
-        bodyUp = transform.up;
+        //Gravity is artificial
+        if (gravityZones.Count > 0)
+        {
+            Vector2 finalGravityUp = new Vector2();
 
-        //Apply gravity
-        rb.AddForce(getGravity());
+            foreach (GravityZoneController gravityZone in gravityZones)
+            {
+                finalGravityUp += gravityZone.gravityVector;
+                rb.AddForce(gravityZone.gravityVector);
+            }
+
+            gravityUp = -finalGravityUp;
+            bodyUp = transform.up;
+        }
+        else //Gravity is default
+        {
+            //Update vector values
+            gravityUp = (transform.position - defaultAttractor.position).normalized;
+            bodyUp = transform.up;
+
+            //Apply gravity
+            rb.AddForce(gravityUp * gravity);
+        }
 
         //Rotate correctly
         Quaternion targetRotation = Quaternion.FromToRotation(bodyUp, gravityUp) * transform.rotation;
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 50 * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10 * Time.deltaTime);
     }
 
-    public Vector2 getGravity()
+    public void AddGravityZone(GravityZoneController gravityZone)
     {
-        if (!inWarpZone) //default gravity
-        {
-            return gravityUp * gravity;
-        }
-        else
-        {
-            //TODO
-            return gravityUp * gravity;
-        }
+        gravityZones.Add(gravityZone);
     }
-       
+
+    public void RemoveGravityZone(GravityZoneController gravityZone)
+    {
+        gravityZones.Remove(gravityZone);
+    }
 }
