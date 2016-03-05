@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9017e055f20903640ab552e73cdbb243
+timeCreated: 1457197302
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - portal0: {fileID: 144720, guid: 9c5384f40ee782f46acabd230f8d5f91, type: 2}
+  - portal1: {fileID: 146440, guid: 27df20a377d182f41bec4fad2a636a46, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GravityController : MonoBehaviour {
 
-    [SerializeField] private float gravity = -100f;
+    [SerializeField] private float gravity = -70f;
     [SerializeField] private Transform defaultAttractor;
 
     //Utility
@@ -22,6 +22,11 @@ public class GravityController : MonoBehaviour {
 
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         rb.gravityScale = 0;
+
+        if (defaultAttractor == null)
+        {
+            defaultAttractor = GameObject.FindGameObjectWithTag("Planet").transform;
+        }
     }
 
     // Update is called once per frame

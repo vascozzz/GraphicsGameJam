@@ -17,10 +17,12 @@ public class PlayerController : MonoBehaviour {
 
     //Components
     private Rigidbody2D rb;
+    private CircleCollider2D circleCollider;
 
 	
 	void Start () {
         rb = GetComponent<Rigidbody2D>();
+        circleCollider = GetComponent<CircleCollider2D>();
 	}
 	
 	void Update () {
@@ -53,6 +55,6 @@ public class PlayerController : MonoBehaviour {
 
     private bool isGrounded()
     {
-        return Physics2D.Raycast(transform.position, -transform.up, 2.3f, jumpRayMask);
+        return Physics2D.Raycast(transform.position, -transform.up, circleCollider.radius + 0.1f, jumpRayMask);
     }
 }
