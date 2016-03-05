@@ -4,18 +4,18 @@ using System.Collections;
 public class PowerController : MonoBehaviour
 {
     private PortalPower portalPower;
-    private SlowmoPower slowmoPower;
     private GravityPower gravityPower;
     private RewindPower rewindPower;
+    private ShockwavePower shockwavePower;
 
     private Power activePower;
 
     void Start()
     {
         portalPower = GetComponent<PortalPower>();
-        slowmoPower = GetComponent<SlowmoPower>();
         gravityPower = GetComponent<GravityPower>();
         rewindPower = GetComponent<RewindPower>();
+        shockwavePower = GetComponent<ShockwavePower>();
 
         activePower = portalPower;
     }
@@ -23,6 +23,7 @@ public class PowerController : MonoBehaviour
     void Update()
     {
         UpdateActivePower();
+        UpdateShockwave();
         activePower.Step();
     }
 
@@ -32,19 +33,23 @@ public class PowerController : MonoBehaviour
         {
             activePower = portalPower;
         }
-
+            
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            activePower = slowmoPower;
+            activePower = gravityPower;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            activePower = gravityPower;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
             activePower = rewindPower;
+        }
+    }
+
+    private void UpdateShockwave()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            shockwavePower.Step();
         }
     }
 }
