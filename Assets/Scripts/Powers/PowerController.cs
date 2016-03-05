@@ -1,27 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PowerController : MonoBehaviour {
-
+public class PowerController : MonoBehaviour
+{
     private PortalPower portalPower;
     private SlowmoPower slowmoPower;
     private GravityPower gravityPower;
+    private RewindPower rewindPower;
 
     private Power activePower;
 
-	// Use this for initialization
-	void Start () {
+    void Start()
+    {
         portalPower = GetComponent<PortalPower>();
         slowmoPower = GetComponent<SlowmoPower>();
         gravityPower = GetComponent<GravityPower>();
+        rewindPower = GetComponent<RewindPower>();
+
         activePower = portalPower;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    void Update()
+    {
         UpdateActivePower();
         activePower.Step();
-	}
+    }
 
     private void UpdateActivePower()
     {
@@ -38,6 +41,10 @@ public class PowerController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             activePower = gravityPower;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            activePower = rewindPower;
         }
     }
 }

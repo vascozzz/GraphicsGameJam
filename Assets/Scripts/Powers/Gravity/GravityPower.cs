@@ -5,6 +5,7 @@ public class GravityPower : Power
 {
     [SerializeField] private GameObject gravityZone;
     [SerializeField] private float gravityZoneForce = 10f;
+
     private Vector2 clickDown;
     
     public override void Step() 
