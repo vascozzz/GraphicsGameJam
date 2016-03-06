@@ -9,6 +9,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxVelocity = 10f;
     [SerializeField] private float jumpForce = 1000f;
 
+    [SerializeField] private Animator spriteAnimator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer armRenderer;
+
     //Utility
     private float moveAxis;
     private float jumpAxis;
@@ -27,6 +31,7 @@ public class PlayerController : MonoBehaviour
 	
 	void Update () 
 	{
+        UpdateAnimation();
 	}
 
     void FixedUpdate()
@@ -55,6 +60,28 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded()
     {
-        return Physics2D.Raycast(transform.position, -transform.up, circleCollider.radius + 0.1f, jumpRayMask);
+        return Physics2D.Raycast(transform.position, -transform.up, circleCollider.radius + 0.7f, jumpRayMask);
+    }
+
+    private void UpdateAnimation()
+    {
+        bool right = moveAxis > 0;
+        bool left = moveAxis < 0;
+
+        spriteAnimator.SetBool("Right", right);
+        spriteAnimator.SetBool("Left", left);
+        spriteAnimator.SetBool("Jump", !isGrounded());
+
+        if (right)
+        {
+            spriteRenderer.flipX = false;
+            armRenderer.flipY = false;
+        }
+            
+        if (left)
+        {
+            spriteRenderer.flipX = true;
+            armRenderer.flipY = true;
+        } 
     }
 }

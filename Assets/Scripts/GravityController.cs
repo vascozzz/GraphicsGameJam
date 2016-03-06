@@ -27,7 +27,7 @@ public class GravityController : MonoBehaviour
 
         if (defaultAttractor == null)
         {
-            defaultAttractor = GameObject.FindGameObjectWithTag("Planet").transform;
+            defaultAttractor = GameObject.FindGameObjectWithTag("Center").transform;
         }
 
         gravityZones = new List<GravityZoneController>();

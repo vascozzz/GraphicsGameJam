@@ -7,6 +7,8 @@ public class PortalController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D hit)
     {
+        if (hit.isTrigger) return;
+        
         portalPower.OnPortalEnter(this.gameObject, hit.gameObject);
     }
 }

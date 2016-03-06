@@ -20,6 +20,8 @@ public class GravityZoneController : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D coll)
     {
+        if (coll.isTrigger) return;
+
         GravityController gravityCtrl = coll.gameObject.GetComponent<GravityController>();
 
         if (!contained.Contains(gravityCtrl))
@@ -31,6 +33,8 @@ public class GravityZoneController : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D coll)
     {
+        if (coll.isTrigger) return;
+
         GravityController gravityCtrl = coll.gameObject.GetComponent<GravityController>();
 
         if (contained.Contains(gravityCtrl))
