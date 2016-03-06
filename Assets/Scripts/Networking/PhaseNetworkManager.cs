@@ -31,17 +31,17 @@ public class PhaseNetworkManager : NetworkManager
      */
     public void JoinGame()
     {
-        if (!SetIpAddress())
-        {
-            DisplayInfo("Please provide a valid address...", true);
-            return;
-        }
+        Debug.Log("ok, got here");
 
+        SetIpAddress();
         SetPort();
         DisplayInfo("You will be playing in a moment...");
 
+        Debug.Log(NetworkManager.singleton.networkAddress);
+        Debug.Log(NetworkManager.singleton.networkPort);
+
         NetworkManager.singleton.StartClient();
-        client.RegisterHandler(MsgType.Error, OnNetworkError);
+        // client.RegisterHandler(MsgType.Error, OnNetworkError);
     }
 
     void OnNetworkError(NetworkMessage msg)
@@ -52,16 +52,15 @@ public class PhaseNetworkManager : NetworkManager
     /*
      * 
      */
-    bool SetIpAddress()
+    void SetIpAddress()
     {
         if (ipAddress.text == "")
         {
-            return false;
+            NetworkManager.singleton.networkAddress = "localhost";
         }
         else
         {
             NetworkManager.singleton.networkAddress = ipAddress.text;
-            return true;
         }
     }
 
