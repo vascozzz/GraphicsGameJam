@@ -9,9 +9,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxVelocity = 10f;
     [SerializeField] private float jumpForce = 1000f;
 
-    [SerializeField] private Animator spriteAnimator;
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private SpriteRenderer armRenderer;
+    [SerializeField] public Animator spriteAnimator;
+    [SerializeField] public SpriteRenderer spriteRenderer;
+    [SerializeField] public SpriteRenderer armRenderer;
 
     //Utility
     private float moveAxis;
@@ -29,6 +29,19 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         circleCollider = GetComponent<CircleCollider2D>();
         networkController = GetComponent<PlayerNetworkController>();
+        spriteAnimator = GetComponentInChildren<Animator>();
+
+        foreach (SpriteRenderer rend in GetComponentsInChildren<SpriteRenderer>())
+        {
+            if (rend.gameObject.name == "GunSprite")
+            {
+                armRenderer = rend;
+            }
+            else if (rend.gameObject.name == "Sprite")
+            {
+                spriteRenderer = rend;
+            }
+        }
 	}
 	
 	void Update () 
@@ -92,6 +105,24 @@ public class PlayerController : MonoBehaviour
 
     public void NetworkAnimate(bool right, bool left, bool grounded)
     {
+        // first time we receive an animation request, grab references to renderers
+        if (spriteAnimator == null)
+        {
+            spriteAnimator = GetComponentInChildren<Animator>();
+
+            foreach (SpriteRenderer rend in GetComponentsInChildren<SpriteRenderer>())
+            {
+                if (rend.gameObject.name == "GunSprite")
+                {
+                    armRenderer = rend;
+                }
+                else if (rend.gameObject.name == "Sprite")
+                {
+                    spriteRenderer = rend;
+                }
+            }
+        }
+
         spriteAnimator.SetBool("Right", right);
         spriteAnimator.SetBool("Left", left);
         spriteAnimator.SetBool("Jump", !grounded);

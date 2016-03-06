@@ -28,6 +28,9 @@ public class PlayerNetworkController : NetworkBehaviour
     [ClientRpc]
     void RpcNetworkAnimate(bool right, bool left, bool grounded)
     {
+        if (playerController == null)
+            return;
+        
         if (!isLocalPlayer)
         {
             playerController.NetworkAnimate(right, left, grounded);

@@ -4,7 +4,6 @@ using System.Collections;
 
 public class PlayerSyncPosition : NetworkBehaviour
 {
-
     [SerializeField] Transform myTransform;
     [SerializeField] float lerpRate = 15;
 
@@ -12,6 +11,11 @@ public class PlayerSyncPosition : NetworkBehaviour
 
     private Vector3 lastPos;
     private float threshold = 0.5f;
+
+    void Start()
+    {
+        myTransform = transform;
+    }
 
     void FixedUpdate()
     {
@@ -33,7 +37,14 @@ public class PlayerSyncPosition : NetworkBehaviour
     {
         if (!isLocalPlayer)
         {
-            myTransform.position = Vector3.Lerp(myTransform.position, syncPos, Time.deltaTime * lerpRate);
+            if (Vector3.Distance(myTransform.position, syncPos) > 5f)
+            {
+                myTransform.position = syncPos;
+            }
+            else
+            {
+                myTransform.position = Vector3.Lerp(myTransform.position, syncPos, Time.deltaTime * lerpRate);
+            }
         }
     }
 

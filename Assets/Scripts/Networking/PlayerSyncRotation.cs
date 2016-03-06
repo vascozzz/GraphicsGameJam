@@ -16,6 +16,12 @@ public class PlayerSyncRotation : NetworkBehaviour
     private Quaternion lastCamRotation;
     private float threshold = 5f;
 
+    void Start()
+    {
+        playerTransform = transform;
+        camTransform = GetComponentInChildren<GunPointerController>().gameObject.transform;
+    }
+
     void FixedUpdate()
     {
         TransmitRotations();
