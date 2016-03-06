@@ -31,14 +31,9 @@ public class PhaseNetworkManager : NetworkManager
      */
     public void JoinGame()
     {
-        Debug.Log("ok, got here");
-
         SetIpAddress();
         SetPort();
         DisplayInfo("You will be playing in a moment...");
-
-        Debug.Log(NetworkManager.singleton.networkAddress);
-        Debug.Log(NetworkManager.singleton.networkPort);
 
         NetworkManager.singleton.StartClient();
         // client.RegisterHandler(MsgType.Error, OnNetworkError);
