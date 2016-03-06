@@ -18,7 +18,11 @@ public class GravityPower : Power
         if (Input.GetMouseButtonUp(0))
         {
             if (((Vector2)GetMouseAsWorldCoords()).Equals(clickDown))
+            {
                 return;
+            }
+
+            powerController.UsedPower();
 
             //Get gravity vector
             Vector2 gravityVector = ((Vector2) GetMouseAsWorldCoords() - clickDown).normalized * gravityZoneForce;

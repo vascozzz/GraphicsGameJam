@@ -14,8 +14,10 @@ public class PortalPower : Power
 
     private Hashtable travelers;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         portal0Spawned = false;
         portal1Spawned = false;
 
@@ -26,11 +28,13 @@ public class PortalPower : Power
     {
         if (Input.GetMouseButtonDown(0))
         {
+            powerController.UsedPower();
             SpawnProjectile(portal0);
         }
 
-        if (Input.GetMouseButtonDown(1))
+        else if (Input.GetMouseButtonDown(1))
         {
+            powerController.UsedPower();
             SpawnProjectile(portal1);
         }
 	}

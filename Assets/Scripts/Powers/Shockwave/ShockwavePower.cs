@@ -2,16 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ShockwavePower : Power {
-
+public class ShockwavePower : Power 
+{
     [SerializeField] private LayerMask shockwaveMask;
     [SerializeField] private float shockForce;
     [SerializeField] private float cooldown;
     private float nextTime;
     private List<Rigidbody2D> contained;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         contained = new List<Rigidbody2D>();
         nextTime = 0;
     }

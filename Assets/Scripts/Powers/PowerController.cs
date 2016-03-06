@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PowerController : MonoBehaviour
 {
-    [SerializeField] private float maxJuice;
+    [SerializeField] private float maxJuice = 100f;
     private float currentJuice;
 
     private PortalPower portalPower;
@@ -21,7 +21,7 @@ public class PowerController : MonoBehaviour
         shockwavePower = GetComponent<ShockwavePower>();
 
         activePower = rewindPower;
-        currentJuice = 0;
+        currentJuice = 0f;
     }
 
     void Update()
@@ -45,26 +45,27 @@ public class PowerController : MonoBehaviour
     public void UsedPower()
     {
         currentJuice -= activePower.juiceCost;
+
+        HUDManager.instance.UpdatePlayerJuice(currentJuice);
     }
 
-    public void RefillJuice(string juiceName)
+    public void RefillJuice(string juiceType)
     {
-        if (juiceName == "JuiceGravity")
+        currentJuice = maxJuice;
+
+        if (juiceType == "JuiceGravity")
         {
-            Debug.Log("picked up JuiceGravity");
             activePower = gravityPower;
         }
-        else if (juiceName == "JuicePortal")
+        else if (juiceType == "JuicePortal")
         {
-            Debug.Log("picked up JuicePortal");
             activePower = portalPower;
         }
-        else if (juiceName == "JuiceRewind")
+        else if (juiceType == "JuiceRewind")
         {
-            Debug.Log("picked up JuiceRewind");
             activePower = rewindPower;
         }
-            
-        currentJuice = maxJuice;
+
+        HUDManager.instance.UpdatePlayerJuice(currentJuice, juiceType);
     }
 }

@@ -20,8 +20,10 @@ public class RewindPower : Power
     private float nextRecordTime;
     private bool rewinding;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         playerController = GetComponent<PlayerController>();
         gravityController = GetComponent<GravityController>();
         rigidBody = GetComponent<Rigidbody2D>();
@@ -42,6 +44,7 @@ public class RewindPower : Power
 
         if (Input.GetMouseButtonUp(0))
         {
+            powerController.UsedPower();
             rewinding = true;
             StartCoroutine(Rewind());
         }

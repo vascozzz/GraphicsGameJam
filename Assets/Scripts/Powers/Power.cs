@@ -3,7 +3,9 @@ using System.Collections;
 
 public abstract class Power : MonoBehaviour 
 {
-    [SerializeField] public float juiceCost;
+    [SerializeField, Range(0f, 100f)] public float juiceCost;
+
+    protected PowerController powerController;
 
     public abstract void Step();
 
@@ -14,5 +16,10 @@ public abstract class Power : MonoBehaviour
         mousePos.z = 0;
 
         return mousePos;
+    }
+
+    protected virtual void Start() 
+    {
+        powerController = GetComponent<PowerController>();
     }
 }
