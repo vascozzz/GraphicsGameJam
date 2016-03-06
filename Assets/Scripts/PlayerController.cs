@@ -22,11 +22,13 @@ public class PlayerController : MonoBehaviour
     //Components
     private Rigidbody2D rb;
     private CircleCollider2D circleCollider;
+    private PlayerNetworkController networkController;
 
 	void Start () 
 	{
         rb = GetComponent<Rigidbody2D>();
         circleCollider = GetComponent<CircleCollider2D>();
+        networkController = GetComponent<PlayerNetworkController>();
 	}
 	
 	void Update () 
@@ -67,10 +69,11 @@ public class PlayerController : MonoBehaviour
     {
         bool right = moveAxis > 0;
         bool left = moveAxis < 0;
+        bool grounded = isGrounded();
 
         spriteAnimator.SetBool("Right", right);
         spriteAnimator.SetBool("Left", left);
-        spriteAnimator.SetBool("Jump", !isGrounded());
+        spriteAnimator.SetBool("Jump", !grounded);
 
         if (right)
         {
@@ -82,6 +85,27 @@ public class PlayerController : MonoBehaviour
         {
             spriteRenderer.flipX = true;
             armRenderer.flipY = true;
-        } 
+        }
+
+        networkController.NetworkAnimate(right, left, grounded);
+    }
+
+    public void NetworkAnimate(bool right, bool left, bool grounded)
+    {
+        spriteAnimator.SetBool("Right", right);
+        spriteAnimator.SetBool("Left", left);
+        spriteAnimator.SetBool("Jump", !grounded);
+
+        if (right)
+        {
+            spriteRenderer.flipX = false;
+            armRenderer.flipY = false;
+        }
+
+        if (left)
+        {
+            spriteRenderer.flipX = true;
+            armRenderer.flipY = true;
+        }
     }
 }

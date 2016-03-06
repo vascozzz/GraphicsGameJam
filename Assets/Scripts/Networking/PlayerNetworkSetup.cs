@@ -22,6 +22,7 @@ public class PlayerNetworkSetup : NetworkBehaviour
             GetComponent<PortalPower>().enabled = true;
             GetComponent<RewindPower>().enabled = true;
             GetComponent<ShockwavePower>().enabled = true;
+            GetComponentInChildren<GunPointerController>().enabled = true;
         }
 	}
 }
