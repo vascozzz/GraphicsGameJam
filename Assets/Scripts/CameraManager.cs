@@ -5,7 +5,7 @@ public class CameraManager : MonoBehaviour
 {
     public static CameraManager instance = null;
 
-    private Camera camera;
+    private Camera cam;
 
     void Awake()
     {
@@ -21,7 +21,7 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
-        camera = GetComponent<Camera>();
+        cam = GetComponent<Camera>();
     }
 
     public void Shake(float shakeDuration, float shakeAmount)
@@ -59,7 +59,7 @@ public class CameraManager : MonoBehaviour
         while (Vector3.Distance(transform.position, target) > 0.1f)
         {
             transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * speed);
-            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 8f, Time.deltaTime * speed);
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, 8f, Time.deltaTime * speed);
 
             yield return null;
         }

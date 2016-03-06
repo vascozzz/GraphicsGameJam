@@ -3,6 +3,8 @@ using System.Collections;
 
 public abstract class Power : MonoBehaviour 
 {
+    [SerializeField] public float juiceCost;
+
     public abstract void Step();
 
     protected Vector3 GetMouseAsWorldCoords()

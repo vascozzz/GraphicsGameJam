@@ -75,10 +75,6 @@ public class RewindPower : Power
         Quaternion nextRot = Quaternion.identity;
         float originalGravityScale = rigidBody.gravityScale;
 
-        // TEMP
-        Color uh = this.GetComponent<SpriteRenderer>().color;
-        this.GetComponent<SpriteRenderer>().color = Color.green;
-
         // reverse queues
         positions.Reverse();
         rotations.Reverse();
@@ -117,8 +113,5 @@ public class RewindPower : Power
         previousPos.Clear();
 
         rewinding = false;
-
-        // TEMP
-        this.GetComponent<SpriteRenderer>().color = uh;
     }
 }

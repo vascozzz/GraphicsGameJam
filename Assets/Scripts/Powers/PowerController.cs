@@ -3,6 +3,9 @@ using System.Collections;
 
 public class PowerController : MonoBehaviour
 {
+    [SerializeField] private float maxJuice;
+    private float currentJuice;
+
     private PortalPower portalPower;
     private GravityPower gravityPower;
     private RewindPower rewindPower;
@@ -17,31 +20,17 @@ public class PowerController : MonoBehaviour
         rewindPower = GetComponent<RewindPower>();
         shockwavePower = GetComponent<ShockwavePower>();
 
-        activePower = portalPower;
+        activePower = rewindPower;
+        currentJuice = 0;
     }
 
     void Update()
     {
-        UpdateActivePower();
         UpdateShockwave();
-        activePower.Step();
-    }
 
-    private void UpdateActivePower()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (currentJuice >= activePower.juiceCost)
         {
-            activePower = portalPower;
-        }
-            
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            activePower = gravityPower;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            activePower = rewindPower;
+            activePower.Step();
         }
     }
 
@@ -51,5 +40,31 @@ public class PowerController : MonoBehaviour
         {
             shockwavePower.Step();
         }
+    }
+
+    public void UsedPower()
+    {
+        currentJuice -= activePower.juiceCost;
+    }
+
+    public void RefillJuice(string juiceName)
+    {
+        if (juiceName == "JuiceGravity")
+        {
+            Debug.Log("picked up JuiceGravity");
+            activePower = gravityPower;
+        }
+        else if (juiceName == "JuicePortal")
+        {
+            Debug.Log("picked up JuicePortal");
+            activePower = portalPower;
+        }
+        else if (juiceName == "JuiceRewind")
+        {
+            Debug.Log("picked up JuiceRewind");
+            activePower = rewindPower;
+        }
+            
+        currentJuice = maxJuice;
     }
 }
