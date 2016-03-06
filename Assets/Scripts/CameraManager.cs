@@ -5,6 +5,8 @@ public class CameraManager : MonoBehaviour
 {
     public static CameraManager instance = null;
 
+    private Camera camera;
+
     void Awake()
     {
         if (instance == null)
@@ -15,6 +17,11 @@ public class CameraManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    void Start()
+    {
+        camera = GetComponent<Camera>();
     }
 
     public void Shake(float shakeDuration, float shakeAmount)
@@ -38,5 +45,23 @@ public class CameraManager : MonoBehaviour
         }
 
         this.transform.position = originalPos;
+    }
+
+    public void ZoomOnTarget(Vector3 target, float speed)
+    {
+        StartCoroutine(ZoomCoroutine(target, speed));
+    }
+
+    IEnumerator ZoomCoroutine(Vector3 target, float speed)
+    {
+        target.z = transform.position.z;
+
+        while (Vector3.Distance(transform.position, target) > 0.1f)
+        {
+            transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * speed);
+            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 8f, Time.deltaTime * speed);
+
+            yield return null;
+        }
     }
 }
