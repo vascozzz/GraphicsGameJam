@@ -11,6 +11,7 @@ public class PortalPower : Power
 
     private GameObject portal0Obj, portal1Obj;
     private bool portal0Spawned, portal1Spawned;
+    private bool switchPortal;
 
     private Hashtable travelers;
 
@@ -20,29 +21,32 @@ public class PortalPower : Power
 
         portal0Spawned = false;
         portal1Spawned = false;
+        switchPortal = false; 
 
         travelers = new Hashtable();
     }
 
 	public override void Step() 
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetButtonDown("Fire" + playerController.GetPlayer()))
         {
-            powerController.UsedPower();
-            SpawnProjectile(portal0);
-        }
+            if (switchPortal)
+            {
+                SpawnProjectile(portal0);
+            }
+            else
+            {
+                SpawnProjectile(portal1);
+            }
 
-        else if (Input.GetMouseButtonDown(1))
-        {
             powerController.UsedPower();
-            SpawnProjectile(portal1);
+            switchPortal = !switchPortal;
         }
 	}
 
     void SpawnProjectile(GameObject portal)
     {
-        Vector3 pos = GetMouseAsWorldCoords();
-        Vector3 direction = (pos - transform.position).normalized;
+        Vector2 direction = playerController.GetShotDirection();
 
         GameObject projectileObj = GameObject.Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
         projectileObj.GetComponent<Rigidbody2D>().AddForce(direction * projectileForce);

@@ -6,6 +6,8 @@ public class PowerController : MonoBehaviour
     [SerializeField] private float maxJuice = 100f;
     private float currentJuice;
 
+    private PlayerController playerCtrl;
+
     private PortalPower portalPower;
     private GravityPower gravityPower;
     private RewindPower rewindPower;
@@ -15,6 +17,8 @@ public class PowerController : MonoBehaviour
 
     void Start()
     {
+        playerCtrl = GetComponent<PlayerController>();
+
         portalPower = GetComponent<PortalPower>();
         gravityPower = GetComponent<GravityPower>();
         rewindPower = GetComponent<RewindPower>();
@@ -36,7 +40,7 @@ public class PowerController : MonoBehaviour
 
     private void UpdateShockwave()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetButtonDown("Shockwave" + playerCtrl.GetPlayer()))
         {
             shockwavePower.Step();
         }
@@ -46,7 +50,7 @@ public class PowerController : MonoBehaviour
     {
         currentJuice -= activePower.juiceCost;
 
-        HUDManager.instance.UpdatePlayerJuice(currentJuice);
+        HUDManager.instance.UpdatePlayerJuice(currentJuice, playerCtrl.GetPlayer());
     }
 
     public void RefillJuice(string juiceType)
@@ -66,6 +70,6 @@ public class PowerController : MonoBehaviour
             activePower = rewindPower;
         }
 
-        HUDManager.instance.UpdatePlayerJuice(currentJuice, juiceType);
+        HUDManager.instance.UpdatePlayerJuice(currentJuice, juiceType, playerCtrl.GetPlayer());
     }
 }

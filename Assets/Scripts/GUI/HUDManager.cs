@@ -33,26 +33,74 @@ public class HUDManager : MonoBehaviour
 	
 	}
 
-    public void UpdatePlayerJuice(float currentJuice)
+    public void UpdatePlayerJuice(float currentJuice, int playerId)
     {
-        p1Slider.value = currentJuice;
+        Slider slider = null;
+
+        switch (playerId)
+        {
+            case 1:
+                slider = p1Slider;
+                break;
+
+            case 2:
+                slider = p2Slider;
+                break;
+
+            case 3:
+                slider = p3Slider;
+                break;
+
+            case 4:
+                slider = p4Slider;
+                break;
+        }
+
+        slider.value = currentJuice;
     }
 
-    public void UpdatePlayerJuice(float currentJuice, string juiceType)
+  
+    public void UpdatePlayerJuice(float currentJuice, string juiceType, int playerId)
     {
+        Slider slider = null;
+        Image color = null;
+
+        switch(playerId)
+        {
+            case 1:
+                slider = p1Slider;
+                color = p1SliderColor;
+                break;
+
+            case 2:
+                slider = p2Slider;
+                color = p2SliderColor;
+                break;
+
+            case 3:
+                slider = p3Slider;
+                color = p3SliderColor;
+                break;
+
+            case 4:
+                slider = p4Slider;
+                color = p4SliderColor;
+                break;
+        }
+
         if (juiceType == "JuiceGravity")
         {
-            p1SliderColor.color = Color.magenta;
+            color.color = new Color(211 / 255f, 19 / 255f, 90 / 255f);
         }
         else if (juiceType == "JuicePortal")
         {
-            p1SliderColor.color = Color.green;
+            color.color = new Color(139 / 255f, 197 / 255f, 62 / 255f);
         }
         else if (juiceType == "JuiceRewind")
         {
-            p1SliderColor.color = Color.blue;
+            color.color = new Color(0, 255 / 255f, 255 / 255f);
         }
 
-        p1Slider.value = currentJuice;
+        slider.value = currentJuice;
     }
 }

@@ -9,7 +9,6 @@ public class RewindPower : Power
     [SerializeField] private float recordInterval = 0.1f;
     [SerializeField] private float rewindSpeed = 25f;
 
-    private PlayerController playerController;
     private GravityController gravityController;
     private Rigidbody2D rigidBody;
     private CircleCollider2D circleCollider;
@@ -24,7 +23,6 @@ public class RewindPower : Power
     {
         base.Start();
 
-        playerController = GetComponent<PlayerController>();
         gravityController = GetComponent<GravityController>();
         rigidBody = GetComponent<Rigidbody2D>();
         circleCollider = GetComponent<CircleCollider2D>();
@@ -37,12 +35,12 @@ public class RewindPower : Power
 
     public override void Step()
     {
-        if (!rewinding && Input.GetMouseButton(0))
+        if (!rewinding && Input.GetButton("Fire" + playerController.GetPlayer()))
         {
             Record();
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetButtonUp("Fire" + playerController.GetPlayer()))
         {
             powerController.UsedPower();
             rewinding = true;

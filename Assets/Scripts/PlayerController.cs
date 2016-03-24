@@ -9,39 +9,31 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxVelocity = 10f;
     [SerializeField] private float jumpForce = 1000f;
 
-    [SerializeField] public Animator spriteAnimator;
-    [SerializeField] public SpriteRenderer spriteRenderer;
-    [SerializeField] public SpriteRenderer armRenderer;
+    [SerializeField] private Animator spriteAnimator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     //Utility
     private float moveAxis;
     private float jumpAxis;
     private Vector3 moveVec;
     private Vector2 moveDir;
+    public int playerNum;
+    public bool isDead;
+    private bool grounded = false;
 
     //Components
     private Rigidbody2D rb;
     private CircleCollider2D circleCollider;
-    private PlayerNetworkController networkController;
+
+    //Sound
+    [SerializeField] private AudioSource floorSound;
+    [SerializeField] private AudioSource jumpSound;
 
 	void Start () 
 	{
         rb = GetComponent<Rigidbody2D>();
         circleCollider = GetComponent<CircleCollider2D>();
-        networkController = GetComponent<PlayerNetworkController>();
-        spriteAnimator = GetComponentInChildren<Animator>();
-
-        foreach (SpriteRenderer rend in GetComponentsInChildren<SpriteRenderer>())
-        {
-            if (rend.gameObject.name == "GunSprite")
-            {
-                armRenderer = rend;
-            }
-            else if (rend.gameObject.name == "Sprite")
-            {
-                spriteRenderer = rend;
-            }
-        }
+        isDead = false;
 	}
 	
 	void Update () 
@@ -51,8 +43,8 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        moveAxis = Input.GetAxisRaw("Horizontal");
-        jumpAxis = Input.GetAxisRaw("Vertical");
+        moveAxis = Input.GetAxisRaw("Horizontal" + playerNum);
+        jumpAxis = Input.GetAxisRaw("Vertical" + playerNum);
 
         //Handle side movement
         moveDir = transform.right * moveAxis * moveSpeed * Time.deltaTime;
@@ -69,6 +61,8 @@ public class PlayerController : MonoBehaviour
         //Handle jump
         if (jumpAxis > 0 && isGrounded())
         {
+            jumpSound.Play();
+            
             rb.AddForce(transform.up * jumpForce);
         }
     }
@@ -82,61 +76,69 @@ public class PlayerController : MonoBehaviour
     {
         bool right = moveAxis > 0;
         bool left = moveAxis < 0;
-        bool grounded = isGrounded();
+        bool onGround = isGrounded();
+
+        if (!grounded && onGround)
+        {
+            floorSound.Play();
+        }
+
+        grounded = onGround;
 
         spriteAnimator.SetBool("Right", right);
         spriteAnimator.SetBool("Left", left);
-        spriteAnimator.SetBool("Jump", !grounded);
+        spriteAnimator.SetBool("Jump", !onGround);
 
         if (right)
         {
             spriteRenderer.flipX = false;
-            armRenderer.flipY = false;
         }
             
         if (left)
         {
             spriteRenderer.flipX = true;
-            armRenderer.flipY = true;
-        }
-
-        networkController.NetworkAnimate(right, left, grounded);
+        } 
     }
 
-    public void NetworkAnimate(bool right, bool left, bool grounded)
+    public void SetPlayer(int playerNum)
     {
-        // first time we receive an animation request, grab references to renderers
-        if (spriteAnimator == null)
-        {
-            spriteAnimator = GetComponentInChildren<Animator>();
+        this.playerNum = playerNum;
+    }
 
-            foreach (SpriteRenderer rend in GetComponentsInChildren<SpriteRenderer>())
+    public int GetPlayer()
+    {
+        return playerNum;
+    }
+
+    public Vector2 GetShotDirection()
+    {
+        // if not moving, get perpendicular 
+        if (moveAxis == 0 && jumpAxis == 0)
+        {
+            if (!spriteRenderer.flipX)
             {
-                if (rend.gameObject.name == "GunSprite")
-                {
-                    armRenderer = rend;
-                }
-                else if (rend.gameObject.name == "Sprite")
-                {
-                    spriteRenderer = rend;
-                }
+                Vector3 dir = transform.right;
+                dir.z = 0f;
+                return (Vector2)dir;
+            }
+            else
+            {
+                Vector3 dir = -transform.right;
+                dir.z = 0f;
+                return (Vector2)dir;
             }
         }
-
-        spriteAnimator.SetBool("Right", right);
-        spriteAnimator.SetBool("Left", left);
-        spriteAnimator.SetBool("Jump", !grounded);
-
-        if (right)
+        else 
         {
-            spriteRenderer.flipX = false;
-            armRenderer.flipY = false;
+            return transform.right * moveAxis + transform.up * jumpAxis;
         }
+    }
 
-        if (left)
-        {
-            spriteRenderer.flipX = true;
-            armRenderer.flipY = true;
-        }
+    public void KillPlayer()
+    {
+        isDead = true;
+        gameObject.SetActive(false);
+
+        GameManager.instance.OnPlayerDeath();
     }
 }

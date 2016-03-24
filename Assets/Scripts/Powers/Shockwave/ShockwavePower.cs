@@ -7,6 +7,10 @@ public class ShockwavePower : Power
     [SerializeField] private LayerMask shockwaveMask;
     [SerializeField] private float shockForce;
     [SerializeField] private float cooldown;
+
+    [SerializeField] private SpriteRenderer shockwaveSprite;
+    [SerializeField] private float shockwaveSpriteTime = 0.3f;
+
     private float nextTime;
     private List<Rigidbody2D> contained;
 
@@ -25,8 +29,9 @@ public class ShockwavePower : Power
             foreach (Rigidbody2D rb in contained)
             {
                 rb.AddForce((rb.gameObject.transform.position - transform.position).normalized * shockForce);
-            }   
+            }
 
+            StartCoroutine(DisplayShockWave());
             nextTime = Time.time + cooldown;
         }
     }
@@ -55,5 +60,12 @@ public class ShockwavePower : Power
                 contained.Remove(rb);
             }
         }
+    }
+
+    IEnumerator DisplayShockWave()
+    {
+        shockwaveSprite.enabled = true;
+        yield return new WaitForSeconds(shockwaveSpriteTime);
+        shockwaveSprite.enabled = false;
     }
 }

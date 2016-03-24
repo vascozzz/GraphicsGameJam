@@ -3,40 +3,34 @@ using System.Collections;
 
 public class GravityPower : Power 
 {
-    [SerializeField] private GameObject gravityZone;
-    [SerializeField] private float gravityZoneForce = 10f;
+    [SerializeField] private GameObject projectile;
+    [SerializeField] private float projectileForce;
 
-    private Vector2 clickDown;
+    private GravityProjectileController shotProjectile;
     
     public override void Step() 
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetButtonDown("Fire" + playerController.GetPlayer()))
         {
-            clickDown = GetMouseAsWorldCoords();
+            powerController.UsedPower();
+            SpawnProjectile();
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetButtonUp("Fire" + playerController.GetPlayer()))
         {
-            if (((Vector2)GetMouseAsWorldCoords()).Equals(clickDown))
-            {
-                return;
-            }
-
-            powerController.UsedPower();
-
-            //Get gravity vector
-            Vector2 gravityVector = ((Vector2) GetMouseAsWorldCoords() - clickDown).normalized * gravityZoneForce;
-            GameObject gravityZoneObj = GameObject.Instantiate(gravityZone, clickDown, Quaternion.identity) as GameObject;
-            Vector3 eulerAngles = gravityZoneObj.transform.eulerAngles;
-
-            float angleValue = Vector3.Angle(gravityVector, Vector3.right);
-            Vector3 crossValue = Vector3.Cross(gravityVector, Vector3.right);
-            if (crossValue.z > 0) angleValue = -angleValue;
-
-            eulerAngles.z = angleValue;
-            gravityZoneObj.transform.eulerAngles = eulerAngles;
-
-            gravityZoneObj.GetComponent<GravityZoneController>().gravityVector = gravityVector;
+            if (shotProjectile != null)
+                shotProjectile.Explode();
         }
 	}
+
+
+    public void SpawnProjectile()
+    {
+        Vector2 direction = playerController.GetShotDirection();
+
+        GameObject projectileObj = GameObject.Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
+        projectileObj.GetComponent<Rigidbody2D>().AddForce(direction * projectileForce);
+
+        shotProjectile = projectileObj.GetComponent<GravityProjectileController>();
+    }
 }

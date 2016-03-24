@@ -6,6 +6,7 @@ public abstract class Power : MonoBehaviour
     [SerializeField, Range(0f, 100f)] public float juiceCost;
 
     protected PowerController powerController;
+    protected PlayerController playerController;
 
     public abstract void Step();
 
@@ -21,5 +22,6 @@ public abstract class Power : MonoBehaviour
     protected virtual void Start() 
     {
         powerController = GetComponent<PowerController>();
+        playerController = GetComponent<PlayerController>();
     }
 }
