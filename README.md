@@ -14,6 +14,20 @@ The assets utilized in this game may **not** be reproduced, distributed, or used
 - Ricardo Melo - Sound Design
 - Vasco Gomes - Programming
 
+## Controls
+
+**Player 1**:
+- Movement: WASD
+- Power-up: Ctrl
+- Gravity push: E
+
+**Player 2**:
+- Movement: Arrow keys
+- Power-up: Enter
+- Gravity push: Delete
+
+Controls may also be customized in the initial screen after exporting the game. Although 4 players are supported, their controls were not configured for this version.
+
 ## Screenshots
 
 ![menu](Docs/menu_sm.png)
