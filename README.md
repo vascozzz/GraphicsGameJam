@@ -4,18 +4,18 @@ Developed for the Porto Graphics Game Jam 2016, a game development competition b
 
 > Far out of time or reality, an all mighty being capable of twisting time and reality itself decides to use a bunch of random guys from anytime or anywhere and make them fight to death on a space twisting, gravity bending, time warping arena!
 
-> Control your character on a local multiplayer arena where you can pick up power-ups to twist space, time and gravity to kill your opponent with one of the level’s trap.
+> Control your character on a local multiplayer arena where you can pick up power-ups to twist space, time and gravity to kill your opponent with one of the levelâ€™s trap.
 
 The assets utilized in this game may **not** be reproduced, distributed, or used in derivative works.
 
 ## Team Members
 - Miguel Marques - Artwork
 - Hugo Cardoso - Programming
-- Ricarde Melo - Sound Design
+- Ricardo Melo - Sound Design
 - Vasco Gomes - Programming
 
 ## Screenshots
 
 ![menu](Docs/menu_sm.png)
 ![screenshot](Docs/screen2_sm.png)
-![screenshot](Docs/screen2_sm.png)
+![screenshot](Docs/screen3_sm.png)
